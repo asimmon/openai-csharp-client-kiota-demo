@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <Copyright>Copyright © Anthony Simmon $([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+    <Authors>Anthony Simmon</Authors>
+    <Owners>Anthony Simmon</Owners>
+    <LangVersion>10</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+</Project>
