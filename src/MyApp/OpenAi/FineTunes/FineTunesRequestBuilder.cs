@@ -1,24 +1,18 @@
-using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Serialization;
+using Microsoft.Kiota.Abstractions;
 using MyApp.OpenAi.FineTunes.Item;
 using MyApp.OpenAi.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
 namespace MyApp.OpenAi.FineTunes {
     /// <summary>
     /// Builds and executes requests for operations under \fine-tunes
     /// </summary>
-    public class FineTunesRequestBuilder {
-        /// <summary>Path parameters for the request</summary>
-        private Dictionary<string, object> PathParameters { get; set; }
-        /// <summary>The request adapter to use to execute the requests.</summary>
-        private IRequestAdapter RequestAdapter { get; set; }
-        /// <summary>Url template to use to build the URL for the current request builder</summary>
-        private string UrlTemplate { get; set; }
+    public class FineTunesRequestBuilder : BaseRequestBuilder {
         /// <summary>Gets an item from the MyApp.OpenAi.fineTunes.item collection</summary>
         public WithFine_tune_ItemRequestBuilder this[string position] { get {
             var urlTplParams = new Dictionary<string, object>(PathParameters);
@@ -30,27 +24,14 @@ namespace MyApp.OpenAi.FineTunes {
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public FineTunesRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) {
-            _ = pathParameters ?? throw new ArgumentNullException(nameof(pathParameters));
-            _ = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
-            UrlTemplate = "{+baseurl}/fine-tunes";
-            var urlTplParams = new Dictionary<string, object>(pathParameters);
-            PathParameters = urlTplParams;
-            RequestAdapter = requestAdapter;
+        public FineTunesRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/fine-tunes", pathParameters) {
         }
         /// <summary>
         /// Instantiates a new FineTunesRequestBuilder and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public FineTunesRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) {
-            if(string.IsNullOrEmpty(rawUrl)) throw new ArgumentNullException(nameof(rawUrl));
-            _ = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
-            UrlTemplate = "{+baseurl}/fine-tunes";
-            var urlTplParams = new Dictionary<string, object>();
-            if (!string.IsNullOrWhiteSpace(rawUrl)) urlTplParams.Add("request-raw-url", rawUrl);
-            PathParameters = urlTplParams;
-            RequestAdapter = requestAdapter;
+        public FineTunesRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/fine-tunes", rawUrl) {
         }
         /// <summary>
         /// List your organization&apos;s fine-tuning jobs

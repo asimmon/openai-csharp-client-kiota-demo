@@ -2,7 +2,7 @@
   "descriptionHash": "F0A3868AB07ED3896C507BE3F3656D96FFD9CDCF88D900B2F5D3DE35686ADBF3B15A0C18844ACA3C13400733A0E508717B7C47652E1B00F3F3CBC5F9207D7E95",
   "descriptionLocation": "../openai.yaml",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.0.1",
+  "kiotaVersion": "1.1.1",
   "clientClassName": "OpenAiClient",
   "clientNamespaceName": "MyApp.OpenAi",
   "language": "CSharp",

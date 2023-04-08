@@ -1,49 +1,30 @@
-using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Abstractions.Serialization;
+using Microsoft.Kiota.Abstractions;
 using MyApp.OpenAi.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
 namespace MyApp.OpenAi.Images.Generations {
     /// <summary>
     /// Builds and executes requests for operations under \images\generations
     /// </summary>
-    public class GenerationsRequestBuilder {
-        /// <summary>Path parameters for the request</summary>
-        private Dictionary<string, object> PathParameters { get; set; }
-        /// <summary>The request adapter to use to execute the requests.</summary>
-        private IRequestAdapter RequestAdapter { get; set; }
-        /// <summary>Url template to use to build the URL for the current request builder</summary>
-        private string UrlTemplate { get; set; }
+    public class GenerationsRequestBuilder : BaseRequestBuilder {
         /// <summary>
         /// Instantiates a new GenerationsRequestBuilder and sets the default values.
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public GenerationsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) {
-            _ = pathParameters ?? throw new ArgumentNullException(nameof(pathParameters));
-            _ = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
-            UrlTemplate = "{+baseurl}/images/generations";
-            var urlTplParams = new Dictionary<string, object>(pathParameters);
-            PathParameters = urlTplParams;
-            RequestAdapter = requestAdapter;
+        public GenerationsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/images/generations", pathParameters) {
         }
         /// <summary>
         /// Instantiates a new GenerationsRequestBuilder and sets the default values.
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public GenerationsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) {
-            if(string.IsNullOrEmpty(rawUrl)) throw new ArgumentNullException(nameof(rawUrl));
-            _ = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
-            UrlTemplate = "{+baseurl}/images/generations";
-            var urlTplParams = new Dictionary<string, object>();
-            if (!string.IsNullOrWhiteSpace(rawUrl)) urlTplParams.Add("request-raw-url", rawUrl);
-            PathParameters = urlTplParams;
-            RequestAdapter = requestAdapter;
+        public GenerationsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/images/generations", rawUrl) {
         }
         /// <summary>
         /// Creates an image given a prompt.
