@@ -3,11 +3,14 @@ using Microsoft.Kiota.Abstractions;
 using Microsoft.Kiota.Serialization.Form;
 using Microsoft.Kiota.Serialization.Json;
 using Microsoft.Kiota.Serialization.Text;
+using MyApp.OpenAi.Answers;
 using MyApp.OpenAi.Audio;
 using MyApp.OpenAi.Chat;
+using MyApp.OpenAi.Classifications;
 using MyApp.OpenAi.Completions;
 using MyApp.OpenAi.Edits;
 using MyApp.OpenAi.Embeddings;
+using MyApp.OpenAi.Engines;
 using MyApp.OpenAi.Files;
 using MyApp.OpenAi.FineTunes;
 using MyApp.OpenAi.Images;
@@ -23,6 +26,10 @@ namespace MyApp.OpenAi {
     /// The main entry point of the SDK, exposes the configuration and the fluent API.
     /// </summary>
     public class OpenAiClient : BaseRequestBuilder {
+        /// <summary>The answers property</summary>
+        public AnswersRequestBuilder Answers { get =>
+            new AnswersRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The audio property</summary>
         public AudioRequestBuilder Audio { get =>
             new AudioRequestBuilder(PathParameters, RequestAdapter);
@@ -30,6 +37,10 @@ namespace MyApp.OpenAi {
         /// <summary>The chat property</summary>
         public ChatRequestBuilder Chat { get =>
             new ChatRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The classifications property</summary>
+        public ClassificationsRequestBuilder Classifications { get =>
+            new ClassificationsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The completions property</summary>
         public CompletionsRequestBuilder Completions { get =>
@@ -42,6 +53,10 @@ namespace MyApp.OpenAi {
         /// <summary>The embeddings property</summary>
         public EmbeddingsRequestBuilder Embeddings { get =>
             new EmbeddingsRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The engines property</summary>
+        public EnginesRequestBuilder Engines { get =>
+            new EnginesRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The files property</summary>
         public FilesRequestBuilder Files { get =>

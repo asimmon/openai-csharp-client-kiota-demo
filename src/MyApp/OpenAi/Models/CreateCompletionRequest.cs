@@ -40,18 +40,18 @@ namespace MyApp.OpenAi.Models {
         /// <summary>The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.Note that &lt;|endoftext|&gt; is the document separator that the model sees during training, so if a prompt is not specified the model will generate as if from the beginning of a new document.</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<string>? Prompt { get; set; }
+        public Completions? Prompt { get; set; }
 #nullable restore
 #else
-        public List<string> Prompt { get; set; }
+        public Completions Prompt { get; set; }
 #endif
         /// <summary>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
-        public List<string>? Stop { get; set; }
+        public Completions? Stop { get; set; }
 #nullable restore
 #else
-        public List<string> Stop { get; set; }
+        public Completions Stop { get; set; }
 #endif
         /// <summary>Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message.</summary>
         public bool? Stream { get; set; }
@@ -103,8 +103,8 @@ namespace MyApp.OpenAi.Models {
                 {"model", n => { Model = n.GetStringValue(); } },
                 {"n", n => { N = n.GetIntValue(); } },
                 {"presence_penalty", n => { PresencePenalty = n.GetDoubleValue(); } },
-                {"prompt", n => { Prompt = n.GetCollectionOfPrimitiveValues<string>()?.ToList(); } },
-                {"stop", n => { Stop = n.GetCollectionOfPrimitiveValues<string>()?.ToList(); } },
+                {"prompt", n => { Prompt = n.GetObjectValue<Completions>(Completions.CreateFromDiscriminatorValue); } },
+                {"stop", n => { Stop = n.GetObjectValue<Completions>(Completions.CreateFromDiscriminatorValue); } },
                 {"stream", n => { Stream = n.GetBoolValue(); } },
                 {"suffix", n => { Suffix = n.GetStringValue(); } },
                 {"temperature", n => { Temperature = n.GetDoubleValue(); } },
@@ -127,14 +127,98 @@ namespace MyApp.OpenAi.Models {
             writer.WriteStringValue("model", Model);
             writer.WriteIntValue("n", N);
             writer.WriteDoubleValue("presence_penalty", PresencePenalty);
-            writer.WriteCollectionOfPrimitiveValues<string>("prompt", Prompt);
-            writer.WriteCollectionOfPrimitiveValues<string>("stop", Stop);
+            writer.WriteObjectValue<Completions>("prompt", Prompt);
+            writer.WriteObjectValue<Completions>("stop", Stop);
             writer.WriteBoolValue("stream", Stream);
             writer.WriteStringValue("suffix", Suffix);
             writer.WriteDoubleValue("temperature", Temperature);
             writer.WriteDoubleValue("top_p", TopP);
             writer.WriteStringValue("user", User);
             writer.WriteAdditionalData(AdditionalData);
+        }
+        /// <summary>
+        /// Composed type wrapper for classes string, string
+        /// </summary>
+        public class Completions : IAdditionalDataHolder, IParsable {
+            /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+            public IDictionary<string, object> AdditionalData { get; set; }
+            /// <summary>Composed type representation for type completionsMember1</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public MyApp.OpenAi.Models.CompletionsMember1? CompletionsMember1 { get; set; }
+#nullable restore
+#else
+            public MyApp.OpenAi.Models.CompletionsMember1 CompletionsMember1 { get; set; }
+#endif
+            /// <summary>Composed type representation for type integer</summary>
+            public int? Integer { get; set; }
+            /// <summary>Serialization hint for the current wrapper.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public string? SerializationHint { get; set; }
+#nullable restore
+#else
+            public string SerializationHint { get; set; }
+#endif
+            /// <summary>Composed type representation for type string</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            public string? String { get; set; }
+#nullable restore
+#else
+            public string String { get; set; }
+#endif
+            /// <summary>
+            /// Instantiates a new completions and sets the default values.
+            /// </summary>
+            public Completions() {
+                AdditionalData = new Dictionary<string, object>();
+            }
+            /// <summary>
+            /// Creates a new instance of the appropriate class based on discriminator value
+            /// </summary>
+            /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+            public static Completions CreateFromDiscriminatorValue(IParseNode parseNode) {
+                _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+                var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
+                var result = new Completions();
+                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase)) {
+                    result.CompletionsMember1 = new MyApp.OpenAi.Models.CompletionsMember1();
+                }
+                else if(parseNode.GetIntValue() is int integerValue) {
+                    result.Integer = integerValue;
+                }
+                else if(parseNode.GetStringValue() is string stringValue) {
+                    result.String = stringValue;
+                }
+                return result;
+            }
+            /// <summary>
+            /// The deserialization information for the current model
+            /// </summary>
+            public IDictionary<string, Action<IParseNode>> GetFieldDeserializers() {
+                if(CompletionsMember1 != null) {
+                    return CompletionsMember1.GetFieldDeserializers();
+                }
+                return new Dictionary<string, Action<IParseNode>>();
+            }
+            /// <summary>
+            /// Serializes information the current object
+            /// </summary>
+            /// <param name="writer">Serialization writer to use to serialize this model</param>
+            public void Serialize(ISerializationWriter writer) {
+                _ = writer ?? throw new ArgumentNullException(nameof(writer));
+                if(CompletionsMember1 != null) {
+                    writer.WriteObjectValue<MyApp.OpenAi.Models.CompletionsMember1>(null, CompletionsMember1);
+                }
+                else if(Integer != null) {
+                    writer.WriteIntValue(null, Integer);
+                }
+                else if(String != null) {
+                    writer.WriteStringValue(null, String);
+                }
+                writer.WriteAdditionalData(AdditionalData);
+            }
         }
     }
 }
